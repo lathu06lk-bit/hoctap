@@ -1,0 +1,303 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>DNU học tập · Luyện ghi nhớ tài liệu</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;600;800&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<style>
+:root{--bg:#f1f3ee;--card:#fff;--ink:#1c2233;--mute:#667085;--line:#d9ddd3;--acc:#4338ca;--accsoft:#e6e4fb;--good:#15803d;--goodbg:#dcf3e3;--bad:#b91c1c;--badbg:#fbe0e0;--gold:#f5c518}
+@media(prefers-color-scheme:dark){:root{--bg:#14171f;--card:#1e222d;--ink:#eceff6;--mute:#9aa3b5;--line:#2f3544;--acc:#8b84ff;--accsoft:#2a2850;--good:#4ade80;--goodbg:#173824;--bad:#f87171;--badbg:#401c1c}}
+*{box-sizing:border-box}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 'Be Vietnam Pro',system-ui,sans-serif;padding:env(safe-area-inset-top,0px) 0 env(safe-area-inset-bottom,0px)}
+main{max-width:720px;margin:0 auto;padding:20px 16px 60px}
+h1{font-size:28px;font-weight:800;margin:8px 0 4px;letter-spacing:-.5px}
+h2{font-size:21px;margin:0 0 12px}
+p.sub{color:var(--mute);margin:0 0 20px}
+.card{background:var(--card);border:2px solid var(--ink);border-radius:14px;padding:18px;margin-bottom:14px;box-shadow:4px 4px 0 var(--ink)}
+textarea{width:100%;min-height:220px;border:2px solid var(--line);border-radius:10px;padding:12px;font:inherit;background:var(--bg);color:var(--ink);resize:vertical}
+textarea:focus,button:focus-visible{outline:3px solid var(--acc);outline-offset:2px}
+button{font:inherit;font-weight:600;cursor:pointer;border:2px solid var(--ink);background:var(--card);color:var(--ink);border-radius:10px;padding:10px 16px}
+button.pri{background:var(--acc);color:#fff;border-color:var(--ink)}
+button.pri:disabled{opacity:.5}
+.row{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+.opt{display:block;width:100%;text-align:left;margin-bottom:10px;background:var(--bg)}
+.opt:hover:not(:disabled){background:var(--accsoft)}
+.opt.ok{background:var(--goodbg);border-color:var(--good)}
+.opt.no{background:var(--badbg);border-color:var(--bad)}
+.bar{height:14px;border:2px solid var(--ink);border-radius:99px;background:var(--card);overflow:hidden}
+.bar i{display:block;height:100%;background:var(--gold);transition:width .4s}
+.stats{display:flex;justify-content:space-between;gap:8px;font-weight:600;margin:8px 0 14px;flex-wrap:wrap}
+.badge{background:var(--accsoft);border-radius:99px;padding:2px 12px;font-size:14px}
+.fb{border-radius:10px;padding:12px;margin-top:6px}
+.fb.ok{background:var(--goodbg)}.fb.no{background:var(--badbg)}
+.drop{display:block;border:2px dashed var(--ink);border-radius:10px;padding:16px;text-align:center;cursor:pointer;margin-bottom:12px;background:var(--bg);font-weight:600}.drop.over{background:var(--accsoft)}.drop small{display:block;font-weight:400;color:var(--mute)}
+.err{color:var(--bad);font-weight:600;margin-top:10px}
+ul{margin:6px 0 0;padding-left:20px}
+.big{font-size:44px;text-align:center;margin:6px 0}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+.nav{display:flex;gap:8px;margin-bottom:6px}.nav button{padding:6px 12px;font-size:14px}
+.inp{width:100%;border:2px solid var(--line);border-radius:10px;padding:10px 12px;font:inherit;background:var(--bg);color:var(--ink);margin-bottom:10px}
+details{margin:8px 0}summary{cursor:pointer;font-weight:600}
+
+:root{--bg:#f4f1ff;--card:#fff;--ink:#1e1b3a;--mute:#6b6a8a;--line:#dcd8f5;--acc:#6c5ce7;--accsoft:#ebe8ff;--good:#0f9d6b;--goodbg:#d9f5ea;--bad:#e0446a;--badbg:#ffe1e8;--gold:#ffc83d;--pink:#ff6b9d;--g1:#f4f1ff;--g2:#ffeef4;--g3:#e6faf6}
+:root[data-theme=dark]{--bg:#15132b;--card:#201d40;--ink:#f1efff;--mute:#a7a4cc;--line:#37336a;--acc:#9b8cff;--accsoft:#2e2a5c;--good:#3ddc97;--goodbg:#14392e;--bad:#ff7a9c;--badbg:#45203a;--g1:#15132b;--g2:#241a3d;--g3:#10282f}
+body{background:linear-gradient(160deg,var(--g1),var(--g2) 60%,var(--g3)) fixed}
+.card{box-shadow:5px 5px 0 var(--acc)}
+button.pri{background:linear-gradient(135deg,var(--acc),#c15bff);color:#fff}
+.bar i{background:linear-gradient(90deg,var(--gold),var(--pink))}
+.mini{padding:4px 12px;font-size:14px;border-radius:99px;margin:0 0 8px 8px}
+.bdg{display:inline-flex;flex-direction:column;align-items:center;padding:8px 10px;border:2px dashed var(--line);border-radius:12px;opacity:.4;font-size:26px;text-align:center;max-width:110px}
+.bdg small{font-size:11px;line-height:1.2}.bdg.on{opacity:1;border:2px solid var(--gold);background:var(--accsoft)}
+.cf{position:fixed;top:-30px;font-size:26px;animation:fall 2.6s linear forwards;pointer-events:none;z-index:9}
+@keyframes fall{to{transform:translateY(112vh) rotate(360deg)}}
+@media(prefers-reduced-motion:reduce){.cf{display:none}}
+</style>
+</head>
+<body>
+<main id="app"></main>
+<script>
+const NEED=2,BATCH=10,DAYS=[1,3,7,14,30],LBL={mcq:'Trắc nghiệm',cloze:'Điền từ',essay:'Tự luận',card:'Thẻ ghi nhớ'};
+const MODES=[['all','🎯 Tất cả'],['mcq','Trắc nghiệm'],['cloze','Điền từ'],['essay','Tự luận'],['card','🃏 Thẻ ghi nhớ'],['wrong','⚠️ Câu hay sai'],['star','⭐ Đã đánh dấu'],['time','⏱ Thử thách 60s']];
+const $=s=>document.querySelector(s),app=$('#app');
+const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const shuffle=a=>{a=[...a];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+const ls={get:(k,d)=>{try{return JSON.parse(localStorage.getItem(k))??d}catch(e){return d}},set:(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
+let DB=ls.get('nhohet:v2',null),CFG=ls.get('nhohet:cfg',{}),Q=[],qi=0,sess={},TI;
+if(!DB){const o=ls.get('nhohet:v1',null);DB={decks:o&&o.items?[{id:'d0',title:o.title,items:o.items,xp:o.xp||0,summary:[],days:0}]:[],cur:null}}
+const save=()=>ls.set('nhohet:v2',DB);
+const D=()=>DB.decks.find(d=>d.id===DB.cur);
+const core=d=>d.items.filter(i=>i.type!=='card');
+const isM=i=>i.streak>=NEED&&!(i.due&&i.due<Date.now());
+const nDone=d=>core(d).filter(isM).length;
+const pc=d=>{const c=core(d).length;return c?Math.round(nDone(d)/c*100):0};
+const lvl=p=>p>=100?'Thuộc lòng 🏆':p>=70?'Nhớ khá chắc 🔥':p>=35?'Quen mặt 🌱':'Mới học 🥚';
+const bar=p=>`<div class="bar"><i style="width:${p}%"></i></div>`;
+const nav=()=>`<div class="nav"><button id="nlib">📚 Thư viện</button><button id="nset">⚙️ Cài đặt</button><button id="nth" title="Sáng/tối">🌓</button><button id="nsn" title="Âm thanh">${CFG.mute?'🔇':'🔔'}</button></div>`;
+const wireNav=()=>{$('#nlib').onclick=()=>lib();$('#nset').onclick=()=>settings();$('#nth').onclick=()=>{CFG.theme=document.documentElement.dataset.theme==='dark'?'light':'dark';saveCfg();applyTheme()};$('#nsn').onclick=e=>{CFG.mute=!CFG.mute;saveCfg();e.target.textContent=CFG.mute?'🔇':'🔔'}};
+
+const saveCfg=()=>ls.set('nhohet:cfg',CFG);
+const applyTheme=()=>{document.documentElement.dataset.theme=CFG.theme||(matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light')};
+const addDay=x=>{const t=new Date().toDateString();if(!DB.day||DB.day.d!==t)DB.day={d:t,xp:0};DB.day.xp+=x};
+let AC;const beep=(f,t=.12)=>{if(CFG.mute)return;try{AC=AC||new(window.AudioContext||window.webkitAudioContext)();const o=AC.createOscillator(),g=AC.createGain();o.frequency.value=f;o.connect(g);g.connect(AC.destination);g.gain.setValueAtTime(.15,AC.currentTime);g.gain.exponentialRampToValueAtTime(.001,AC.currentTime+t);o.start();o.stop(AC.currentTime+t)}catch(e){}};
+const sfx=g=>g?(beep(660),setTimeout(()=>beep(880),90)):beep(180,.25);
+function confetti(){for(let i=0;i<40;i++){const e=document.createElement('span');e.className='cf';e.textContent=['🎉','⭐','✨','🎊'][i%4];e.style.left=Math.random()*100+'vw';e.style.animationDelay=Math.random()*.8+'s';document.body.appendChild(e);setTimeout(()=>e.remove(),3600)}}
+const dl=(t,n,m)=>{const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([t],{type:m}));a.download=n;a.click()};
+const badges=()=>{const t=DB.decks.reduce((a,d)=>({xp:a.xp+d.xp,n:a.n+(d.n||0),m:a.m+nDone(d),days:Math.max(a.days,d.days||0)}),{xp:0,n:0,m:0,days:0});
+  return [['🌱','Câu đầu tiên',t.n>=1],['💯','100 lượt trả lời',t.n>=100],['🔥','3 ngày liên tiếp',t.days>=3],['🏅','7 ngày liên tiếp',t.days>=7],['🧠','Nhớ 50 câu',t.m>=50],['⭐','1000 XP',t.xp>=1000],['📚','3 bộ tài liệu',DB.decks.length>=3]]};
+const dash=()=>{const g=CFG.goal||50,t=DB.day&&DB.day.d===new Date().toDateString()?DB.day.xp:0;
+  return `<div class="card"><h2>Mục tiêu hôm nay</h2>${bar(Math.min(100,t/g*100))}<div class="stats"><span>${t}/${g} XP</span><span>${t>=g?'Đã đạt mục tiêu 🎉':'Cố lên, sắp đạt rồi!'}</span></div>
+  <div class="row">${badges().map(([e,n,ok])=>`<span class="bdg ${ok?'on':''}">${e}<small>${n}</small></span>`).join('')}</div></div>`};
+
+/* ---------- AI ---------- */
+const SYS=n=>`Bạn là gia sư giúp người học GHI NHỚ tài liệu. Viết bằng đúng ngôn ngữ của tài liệu. Chỉ trả về JSON hợp lệ (không markdown) dạng: {"title":"","summary":["ý chính"],"mcq":[{"q":"","options":["","","",""],"answer":0,"explain":"giải thích + mẹo nhớ"}],"cloze":[{"q":"câu trích từ tài liệu có chỗ trống ____","a":"đáp án ngắn 1-3 từ"}],"essay":[{"q":"","sample":"","points":[""]}]}. Tạo khoảng ${n} câu mcq 4 đáp án (answer là chỉ số 0-3), ${Math.ceil(n/2)} câu cloze, 2-3 câu essay, summary 2-4 ý. Phủ MỌI ý, số liệu, định nghĩa quan trọng, không trùng lặp, đáp án nhiễu hợp lý. Chỉ dùng thông tin trong tài liệu.`;
+async function ai(text,part,total){
+  if(CFG.key){
+    const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'content-type':'application/json','x-api-key':CFG.key,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:CFG.model||'claude-sonnet-5-5',max_tokens:6000,system:SYS(Math.min(14,Math.max(5,Math.ceil(text.length/450)))),messages:[{role:'user',content:`Phần ${part}/${total}:\n\n${text}`}]})});
+    const d=await r.json(); if(!r.ok)throw new Error(d.error?.message||'Lỗi API');
+    const raw=d.content.map(c=>c.text||'').join('');return JSON.parse(raw.slice(raw.indexOf('{'),raw.lastIndexOf('}')+1));
+  }
+  if(location.protocol==='file:')throw new Error('Bạn đang mở file trực tiếp từ máy: hãy vào ⚙️ Cài đặt dán API key để dùng ngay, hoặc deploy lên Vercel.');
+  const r=await fetch('/api/generate',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({text,part,total})});
+  const d=await r.json(); if(!r.ok)throw new Error(d.error||'Lỗi máy chủ');return d;
+}
+
+/* ---------- Thư viện ---------- */
+function lib(err){clearInterval(TI);
+  app.innerHTML=nav()+`<h1>🎓 DNU học tập</h1><p class="sub">Dán hoặc tải tài liệu lên, luyện từng vòng cho đến khi nhớ hết.</p>${dash()}
+  ${DB.decks.map(d=>`<div class="card"><h2>${esc(d.title)}</h2>${bar(pc(d))}<div class="stats"><span>${nDone(d)}/${core(d).length} câu đã nhớ</span><span class="badge">${lvl(pc(d))}</span></div><div class="row"><button class="pri" data-open="${d.id}">Mở bộ này</button></div></div>`).join('')}
+  <div class="card"><h2>Tài liệu mới</h2>
+  <label class="drop" id="drop">📄 Chọn, kéo thả hoặc dán file tài liệu vào đây<small>PDF, Word (.docx), PowerPoint (.pptx), .txt, .md · chọn được nhiều file</small><small id="fst">Hoặc dán chữ trực tiếp vào ô bên dưới</small><input type="file" id="pdf" multiple accept=".pdf,.docx,.pptx,.txt,.md,.csv,.json,.html,.htm,.rtf,application/pdf,text/*" hidden></label>
+  <textarea id="txt" placeholder="Dán nội dung cần học (bài giảng, ghi chú, bài báo...)"></textarea>
+  <div class="row"><button class="pri" id="make">Tạo bài luyện</button><button id="imp">Nhập bộ đã xuất (.json)</button><input type="file" id="impf" accept=".json" hidden></div>
+  <div class="err" id="err">${esc(err||'')}</div></div>`;
+  wireNav();
+  document.querySelectorAll('[data-open]').forEach(b=>b.onclick=()=>{DB.cur=b.dataset.open;deck()});
+  const dz=$('#drop');
+  $('#pdf').onchange=e=>e.target.files.length&&readFiles([...e.target.files]);
+  ['dragenter','dragover'].forEach(v=>dz.addEventListener(v,e=>{e.preventDefault();dz.classList.add('over')}));
+  ['dragleave','drop'].forEach(v=>dz.addEventListener(v,e=>{e.preventDefault();dz.classList.remove('over')}));
+  dz.addEventListener('drop',e=>e.dataTransfer.files.length&&readFiles([...e.dataTransfer.files]));
+  $('#make').onclick=make;$('#imp').onclick=()=>$('#impf').click();
+  $('#impf').onchange=async e=>{try{const o=JSON.parse(await e.target.files[0].text());if(!o.items)throw 0;o.id='d'+Date.now();DB.decks.unshift(o);DB.cur=o.id;save();deck()}catch(x){$('#err').textContent='File .json không hợp lệ.'}};
+}
+
+async function make(){
+  const t=$('#txt').value.trim();if(t.length<80)return $('#err').textContent='Hãy dán tài liệu dài hơn một chút.';
+  const parts=chunks(t),items=[],sum=[];let title='';
+  try{
+    for(let i=0;i<parts.length;i++){
+      app.innerHTML=`<h1>Đang tạo câu hỏi…</h1><p class="sub">Phần ${i+1}/${parts.length} của tài liệu</p>${bar(i/parts.length*100)}`;
+      const d=await ai(parts[i],i+1,parts.length);title=title||d.title;
+      (d.summary||[]).forEach(x=>sum.push(x));
+      (d.mcq||[]).forEach(m=>{if(m.options?.length>=2){const a=m.options[m.answer];items.push({type:'mcq',q:m.q,options:m.options,a,explain:m.explain,streak:0});items.push({type:'card',q:m.q,a,explain:m.explain,streak:0})}});
+      (d.cloze||[]).forEach(c=>c.q&&c.a&&items.push({type:'cloze',q:c.q,a:c.a,streak:0}));
+      (d.essay||[]).forEach(e=>items.push({type:'essay',q:e.q,sample:e.sample,points:e.points||[],streak:0}));
+    }
+    if(!items.length)throw new Error('Không tạo được câu hỏi, thử lại nhé.');
+    const d={id:'d'+Date.now(),title:title||'Tài liệu của tôi',items,xp:0,summary:sum.slice(0,12),days:0};
+    DB.decks.unshift(d);DB.cur=d.id;save();deck();
+  }catch(e){lib(e.message)}
+}
+
+/* ---------- Bộ câu hỏi ---------- */
+function deck(){clearInterval(TI);
+  const d=D();if(!d)return lib();const p=pc(d);
+  app.innerHTML=nav()+`<h1>${esc(d.title)}</h1>${bar(p)}
+  <div class="stats"><span>${nDone(d)}/${core(d).length} câu đã nhớ (${p}%)</span><span class="badge">${lvl(p)}</span><span>⭐ ${d.xp} · 📅 ${d.days||0} ngày · 🎯 ${d.n?Math.round(d.ok/d.n*100):0}% đúng (${d.n||0} lượt)</span></div>
+  ${d.summary?.length?`<details class="card"><summary>Tóm tắt ý chính</summary><ul>${d.summary.map(x=>`<li>${esc(x)}</li>`).join('')}</ul></details>`:''}
+  <div class="card"><h2>Chọn chế độ luyện</h2><div class="row">${MODES.filter(([k])=>k==='all'||k==='wrong'||(k==='star'?d.items.some(i=>i.star):k==='time'?d.items.some(i=>i.type==='mcq'):d.items.some(i=>i.type===k))).map(([k,l])=>`<button class="pri" data-m="${k}">${l}</button>`).join('')}</div>
+  <p class="sub" style="margin:10px 0 0">Mỗi câu cần đúng ${NEED} lần liên tiếp. Câu đã nhớ sẽ tự quay lại sau 1, 3, 7, 14, 30 ngày để bạn không quên.</p></div>
+  <div class="row"><button id="ren">Đổi tên</button><button id="md">Tải bản ôn tập (.md)</button><button id="exp">Xuất bộ này (.json)</button><button id="del">Xoá bộ này</button></div>`;
+  wireNav();
+  document.querySelectorAll('[data-m]').forEach(b=>b.onclick=()=>start(b.dataset.m));
+  $('#exp').onclick=()=>dl(JSON.stringify(d),(d.title||'bo-cau-hoi')+'.json','application/json');
+  $('#ren').onclick=()=>{const n=prompt('Tên mới cho bộ câu hỏi:',d.title);if(n&&n.trim()){d.title=n.trim();save();deck()}};
+  $('#md').onclick=()=>dl(`# ${d.title}\n\n## Tóm tắt\n${(d.summary||[]).map(x=>'- '+x).join('\n')}\n\n## Hỏi - Đáp\n${d.items.filter(i=>i.type==='card').map(i=>`**${i.q}**\n${i.a}${i.explain?' — '+i.explain:''}\n`).join('\n')}`,(d.title||'on-tap')+'.md','text/markdown');
+  $('#del').onclick=()=>{if(confirm('Xoá bộ câu hỏi này?')){DB.decks=DB.decks.filter(x=>x!==d);DB.cur=null;save();lib()}};
+}
+
+function start(mode){
+  const d=D(),match=i=>mode==='all'?i.type!=='card':mode==='wrong'?(i.wrong>0&&i.type!=='card'):mode==='star'?!!i.star:mode==='time'?i.type==='mcq':i.type===mode;
+  let p=d.items.filter(i=>match(i)&&(i.type==='card'||mode==='star'||mode==='time'||!isM(i)));
+  if(!p.length){p=d.items.filter(match);p.forEach(i=>{if(i.type!=='card'&&mode!=='star'&&mode!=='time'){i.streak=0;i.due=0}})}
+  if(!p.length)return deck();
+  Q=shuffle(p).slice(0,mode==='time'?40:(CFG.batch||BATCH));qi=0;sess={ok:0,n:0,combo:0,xp:0,bad:[],mode};clearInterval(TI);
+  if(mode==='time'){sess.t=Date.now()+60000;TI=setInterval(()=>{const s=Math.ceil((sess.t-Date.now())/1000),e=$('#tm');if(e)e.textContent='⏱ '+Math.max(s,0)+'s';if(s<=0){clearInterval(TI);finish()}},500)}
+  ask();
+}
+
+/* ---------- Luyện tập ---------- */
+const head=()=>{const d=D();return nav()+bar(pc(d))+`<div class="stats"><span>${sess.mode==='time'?'<b id="tm">⏱</b>':`Câu ${qi+1}/${Q.length}`}</span><span class="badge">${nDone(d)}/${core(d).length} đã nhớ</span><span>🔥 ${sess.combo} · ⭐ ${d.xp}</span></div>`};
+const norm=s=>String(s).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/đ/g,'d').replace(/[^a-z0-9 ]/g,' ').replace(/\s+/g,' ').trim();
+const fbk=(g,t,h)=>`<div class="fb ${g?'ok':'no'}"><b>${h||(g?'Chính xác!':'Chưa đúng.')}</b> ${t}</div>`;
+
+function ask(){
+  if(qi>=Q.length||(sess.mode==='time'&&Date.now()>sess.t))return finish();
+  const it=Q[qi],T=it.type;
+  app.innerHTML=head()+`<div class="card"><div class="row" style="margin:0;align-items:center"><span class="badge">${LBL[T]}</span><button class="mini" id="spk" title="Đọc to">🔊</button><button class="mini" id="star" title="Đánh dấu">${it.star?'⭐':'☆'}</button></div><h2 style="margin-top:10px">${esc(it.q)}</h2><div id="body"></div><div id="fb"></div></div>`;
+  wireNav();const b=$('#body');
+  $('#spk').onclick=()=>{try{speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(it.q);u.lang=/[à-ỹ]/i.test(it.q)?'vi-VN':'en-US';speechSynthesis.speak(u)}catch(e){}};
+  $('#star').onclick=e=>{it.star=!it.star;save();e.target.textContent=it.star?'⭐':'☆'};
+  if(T==='mcq'){
+    const o=shuffle(it.options);
+    b.innerHTML=o.map((x,i)=>`<button class="opt" data-i="${i}">${i+1}. ${esc(x)}</button>`).join('')+'<button class="mini" id="hint" style="margin-left:0">💡 Gợi ý 50/50 (−5 XP)</button>';
+    b.querySelectorAll('.opt').forEach(x=>x.onclick=()=>{const g=o[x.dataset.i]===it.a;
+      b.querySelectorAll('.opt').forEach(y=>{y.disabled=true;if(o[y.dataset.i]===it.a)y.classList.add('ok')});
+      if(!g)x.classList.add('no');grade(it,g,fbk(g,'Đáp án: '+esc(it.a)+'<br>'+esc(it.explain||'')))});
+    $('#hint').onclick=e=>{const w=[...b.querySelectorAll('.opt')].filter(y=>o[y.dataset.i]!==it.a&&!y.disabled);shuffle(w).slice(0,2).forEach(y=>{y.disabled=true;y.style.opacity=.35});e.target.disabled=true;const d=D();d.xp=Math.max(0,d.xp-5);save()};
+  }else if(T==='cloze'){
+    b.innerHTML=`<input id="ans" class="inp" placeholder="Điền từ còn thiếu" autocomplete="off"><div class="row"><button class="pri" id="chk">Kiểm tra</button></div>`;
+    const f=()=>{const a=norm($('#ans').value),c=norm(it.a),g=a&&(a===c||(c.length>3&&a.includes(c)));$('#ans').readOnly=true;$('#chk').parentElement.remove();grade(it,!!g,fbk(g,'Đáp án: '+esc(it.a)))};
+    $('#chk').onclick=f;$('#ans').onkeydown=e=>{if(e.key==='Enter')f()};$('#ans').focus();
+  }else{
+    b.innerHTML=(T==='essay'?'<textarea id="ans" style="min-height:110px" placeholder="Viết câu trả lời theo trí nhớ…"></textarea>':'')+`<div class="row"><button class="pri" id="rev">${T==='card'?'Lật thẻ':'Xem đáp án'}</button></div>`;
+    $('#rev').onclick=()=>{$('#rev').parentElement.remove();
+      const a=T==='essay'?`<b>Đáp án mẫu:</b> ${esc(it.sample)}<ul>${(it.points||[]).map(x=>`<li>${esc(x)}</li>`).join('')}</ul>`:`<b>${esc(it.a)}</b><br>${esc(it.explain||'')}`;
+      $('#fb').innerHTML=`<div class="fb ok">${a}</div><p>Bạn nhớ chưa?</p><div class="row"><button class="pri" id="y">Mình nhớ rồi</button><button id="n">Chưa nhớ</button></div>`;
+      $('#y').onclick=()=>grade(it,true,'',1);$('#n').onclick=()=>grade(it,false,'',1)};
+  }
+}
+document.addEventListener('keydown',e=>{if(/^[1-4]$/.test(e.key)&&!/INPUT|TEXTAREA/.test(document.activeElement.tagName)){const o=document.querySelector('.opt[data-i="'+(e.key-1)+'"]:not(:disabled)');o&&o.click()}});
+
+function grade(it,g,html,keep){
+  const d=D();sess.n++;d.n=(d.n||0)+1;if(g)d.ok=(d.ok||0)+1;sfx(g);const h=$('#hint');if(h)h.disabled=true;
+  if(g){sess.ok++;sess.combo++;const x=10+Math.min(sess.combo,5)*2;sess.xp+=x;d.xp+=x;addDay(x)}else{sess.combo=0;sess.bad.push(it)}
+  if(it.type!=='card'){
+    if(g){it.streak++;if(it.streak>=NEED){it.lv=Math.min((it.lv||0)+1,DAYS.length);it.due=Date.now()+DAYS[it.lv-1]*864e5}}
+    else{it.streak=0;it.wrong=(it.wrong||0)+1;it.lv=0;it.due=0}
+  }
+  const t=new Date().toDateString(),y=new Date(Date.now()-864e5).toDateString();
+  if(d.last!==t){d.days=d.last===y?(d.days||0)+1:1;d.last=t}
+  save();
+  const f=$('#fb');
+  if(keep){f.querySelectorAll('p,.row').forEach(e=>e.remove());f.insertAdjacentHTML('beforeend',fbk(g,g?'Cứ thế phát huy!':'Không sao, câu này sẽ quay lại.',g?'Tốt lắm!':'Chưa nhớ.'))}
+  else f.innerHTML=html;
+  f.insertAdjacentHTML('beforeend',`<div class="row"><button class="pri" id="next">${qi+1>=Q.length?'Xem kết quả':'Câu tiếp'}</button></div>`);
+  $('#next').onclick=()=>{qi++;ask()};$('#next').focus();
+}
+
+function finish(){clearInterval(TI);
+  const d=D(),p=pc(d),all=p>=100;
+  app.innerHTML=nav()+`<div class="card"><div class="big">${all?'🎉':'💪'}</div><h2 style="text-align:center">${all?'Bạn đã nhớ hết tài liệu!':'Xong một vòng'}</h2>
+  <p style="text-align:center">Đúng ${sess.ok}/${sess.n} · +${sess.xp} XP</p>${bar(p)}
+  <div class="stats"><span>${nDone(d)}/${core(d).length} câu đã nhớ</span><span class="badge">${lvl(p)}</span></div>
+  ${sess.bad.length?`<details open><summary>Cần xem lại (${sess.bad.length})</summary><ul>${sess.bad.map(x=>`<li><b>${esc(x.q)}</b><br>${esc(x.a||x.sample||'')}</li>`).join('')}</ul></details>`:''}
+  <div class="row"><button class="pri" id="again">${all?'Ôn lại toàn bộ':'Vòng tiếp theo'}</button><button id="hm">Về bộ câu hỏi</button></div></div>`;
+  wireNav();$('#again').onclick=()=>start(sess.mode);$('#hm').onclick=deck;if(all||(sess.n>=5&&sess.ok===sess.n))confetti();
+}
+
+/* ---------- Cài đặt ---------- */
+function settings(msg){clearInterval(TI);
+  app.innerHTML=nav()+`<h1>Cài đặt</h1><div class="card"><h2>Chạy trực tiếp bằng API key</h2>
+  <p class="sub">Dán key để dùng ngay cả khi mở file trên máy (không cần Vercel). Key chỉ lưu trong trình duyệt này, hãy dùng trên máy cá nhân.</p>
+  <input id="key" class="inp" type="password" placeholder="sk-ant-..." value="${esc(CFG.key||'')}">
+  <input id="mdl" class="inp" placeholder="Model (mặc định claude-sonnet-5-5)" value="${esc(CFG.model||'')}">
+  <input id="goal" class="inp" type="number" min="10" placeholder="Mục tiêu XP mỗi ngày (mặc định 50)" value="${CFG.goal||''}"><input id="bat" class="inp" type="number" min="3" max="30" placeholder="Số câu mỗi vòng (mặc định 10)" value="${CFG.batch||''}">
+  <div class="row"><button class="pri" id="sv">Lưu</button><button id="clr">Xoá key</button></div><div class="err" style="color:var(--good)">${msg||''}</div></div>
+  <div class="card"><h2>Dữ liệu</h2><button id="wipe">Xoá toàn bộ bộ câu hỏi và tiến trình</button></div>`;
+  wireNav();
+  $('#sv').onclick=()=>{CFG={...CFG,key:$('#key').value.trim(),model:$('#mdl').value.trim(),goal:+$('#goal').value||0,batch:+$('#bat').value||0};saveCfg();settings('Đã lưu.')};
+  $('#clr').onclick=()=>{delete CFG.key;saveCfg();settings('Đã xoá key.')};
+  $('#wipe').onclick=()=>{if(confirm('Xoá hết mọi thứ?')){DB={decks:[],cur:null};save();lib()}};
+}
+
+pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+document.addEventListener('paste',e=>{const fs=e.clipboardData&&e.clipboardData.files;if(fs&&fs.length&&$('#fst')){e.preventDefault();readFiles([...fs])}});
+async function extract(f){
+  const ext=(f.name.split('.').pop()||'').toLowerCase(), st=$('#fst');
+  if(ext==='pdf'||f.type==='application/pdf'){
+    const pdf=await pdfjsLib.getDocument({data:await f.arrayBuffer()}).promise;
+    let out='';
+    for(let p=1;p<=pdf.numPages;p++){
+      const c=await (await pdf.getPage(p)).getTextContent();
+      out+=c.items.map(i=>i.str+(i.hasEOL?'\n':' ')).join('')+'\n\n';
+      st.textContent=f.name+': trang '+p+'/'+pdf.numPages+'…';
+    }
+    return out;
+  }
+  if(ext==='docx')return (await mammoth.extractRawText({arrayBuffer:await f.arrayBuffer()})).value;
+  if(ext==='pptx'){
+    const z=await JSZip.loadAsync(await f.arrayBuffer());
+    const names=Object.keys(z.files).filter(n=>/^ppt\/slides\/slide\d+\.xml$/.test(n)).sort((a,b)=>a.match(/\d+/)[0]-b.match(/\d+/)[0]);
+    let out='';
+    for(const n of names){
+      const x=await z.files[n].async('string');
+      out+=[...x.matchAll(/<a:t[^>]*>([^<]*)<\/a:t>/g)].map(m=>m[1]).join(' ').replace(/&lt;/g,'<').replace(/&gt;/g,'>').replace(/&quot;/g,'"').replace(/&apos;/g,"'").replace(/&amp;/g,'&')+'\n\n';
+    }
+    return out;
+  }
+  if(ext==='doc'||ext==='ppt')throw new Error('File .'+ext+' đời cũ chưa hỗ trợ, hãy lưu lại thành .'+ext+'x hoặc PDF');
+  if(['txt','md','csv','json','html','htm','rtf'].includes(ext)||f.type.startsWith('text/')){
+    const t=await f.text();
+    return /^html?$/.test(ext)?t.replace(/<(script|style)[\s\S]*?<\/\1>/gi,'').replace(/<[^>]+>/g,' '):t;
+  }
+  throw new Error('Định dạng .'+ext+' chưa hỗ trợ (dùng PDF, Word .docx, PowerPoint .pptx hoặc văn bản .txt/.md)');
+}
+async function readFiles(files){
+  const st=$('#fst'); let all=[],bad=[];
+  for(const f of files){
+    try{st.textContent='Đang đọc '+f.name+'…';const t=(await extract(f)).trim();
+      if(t.length<20)bad.push(f.name+' (không có chữ, có thể là file scan/ảnh)');else all.push(t)}
+    catch(e){bad.push(f.name+': '+e.message)}
+  }
+  if(all.length){const box=$('#txt');box.value=(box.value.trim()?box.value.trim()+'\n\n':'')+all.join('\n\n');
+    st.textContent='Đã đọc '+all.length+' file ('+box.value.length.toLocaleString()+' ký tự). Bấm "Tạo bài luyện".'}
+  else st.textContent='Không đọc được file nào.';
+  if(bad.length)$('#err').textContent='Bỏ qua: '+bad.join('; ');
+}
+
+
+function chunks(t){const out=[];let cur='';for(const p of t.split(/\n\s*\n|\n/)){if((cur+p).length>5000&&cur){out.push(cur);cur=''}cur+=p+'\n'}if(cur.trim().length>40)out.push(cur);
+  return out.flatMap(c=>{const r=[];for(let i=0;i<c.length;i+=6500)r.push(c.slice(i,i+6500));return r})}
+
+
+applyTheme();DB.cur=null;lib();
+</script>
+</body>
+</html>
